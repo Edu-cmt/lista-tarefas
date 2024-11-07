@@ -1,0 +1,56 @@
+<html lang="pt-br" th:replace="~{base :: layout (~{::main})}">
+  <head>
+    <title>Lista de Tarefas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <style>
+      .sortable-ghost {
+        background-color: #f1f1f1;
+      }
+      tr {
+        cursor: move;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Lista de Tarefas</h1>
+
+      <table id="taskTable" class="table" th:unless="${#lists.isEmpty(tarefas)}">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">TÍTULO</th>
+            <th scope="col">CRIADO EM</th>
+            <th scope="col">PRAZO DE ENTREGA</th>
+            <th scope="col">ENTREGUE EM</th>
+            <th scope="col">AÇÕES</th>
+          </tr>
+        </thead>
+        <tbody id="sortable">
+          <tr th:each="tarefa : ${tarefas}" th:attr="data-id=${tarefa.id}">
+            <th scope="row" th:text="${tarefa.id}"></th>
+            <td th:text="${tarefa.title}"></td>
+            <td th:text="${#temporals.format(tarefa.createdAt)}"></td>
+            <td th:text="${#temporals.format(tarefa.deadline)}"></td>
+            <td th:text="${#temporals.format(tarefa.finishedAt) ?: '---'}"></td>
+            <td>
+              <form class="d-inline" th:action="@{/finish/{id}(id=${tarefa.id})}" method="post"> 
+                <button type="submit" class="btn btn-success" 
+                th:classappend="${tarefa.finishedAt} ? 'disabled' : ''">
+                Concluir</button>
+              </form>
+              <a th:href="@{/edit/{id}(id=${tarefa.id})}" class="btn btn-warning"
+                th:classappend="${tarefa.finishedAt} ? 'disabled' : ''">
+                Editar</a>
+              <a th:href="@{/delete/{id}(id=${tarefa.id})}" class="btn btn-danger">Excluir</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p th:if="${#lists.isEmpty(tarefas)}">Nenhuma tarefa cadastrada</p>
+      <a th:href="@{/create}" class="btn btn-primary">Incluir Tarefa</a>
+    </main>
+
+  </body>
+</html>

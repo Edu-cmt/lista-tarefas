@@ -1,0 +1,17 @@
+<!doctype html>
+<html th:replace="~{base :: layout (~{::main})}">
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <main class="container">
+        <h1>Excluir Tarefa</h1>
+        <p>Tem certeza que deseja excluir a tarefa <strong th:text="${tarefa.title}"></strong>?</p>
+
+        <form method="POST">
+            <button type="submit" class="btn btn-danger">Excluir</button>
+            <a th:href="@{/}" class="btn btn-primary">Cancelar</a>
+        </form>
+    </main>
+  </body>
+</html>

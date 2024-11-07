@@ -1,0 +1,36 @@
+<!doctype html>
+<html th:replace="~{base :: layout (~{::main})}">
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <main>
+        <h1>
+            <Span th:unless="${tarefa.id}">Nova</Span>
+            <span th:if="${tarefa.id}">Editar</span>
+            Tarefa
+        </h1>
+
+        <form method="POST" th:object="${tarefa}">
+            <input type="hidden" th:field="*{id}">
+            <div class="mb-3">
+                <label for="title" class="form-label">Título</label>
+                <input type="text" class="from-control" id="title" th:field="*{title}" >
+                <ul>
+                    <li th:each="error : ${#fields.errors('title')}" th:text="${error}" class="text-danger"></li>
+                </ul>
+            </div>
+
+            <div class="mb-3">
+                <label for="deadline" class="form-label">Prazo de Entrega</label>
+                <input type="date" class="from-control" id="deadline" th:field="*{deadline}" >
+                <ul>
+                    <li th:each="error : ${#fields.errors('deadline')}" th:text="${error}" class="text-danger"></li>
+                </ul>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a th:href="@{/}" class="btn btn-secondary">Voltar</a>
+        </form>
+    </main>
+  </body>
+</html>
